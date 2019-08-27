@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Тендер</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<header class="header">
+    <div class="container-fluid">
+        <a href="https://aokrt.ru/" class="logo">
+            <img style="width: auto; max-height: 42px; vertical-align: middle; border: 0" src="{% static 'logo.png' %}">
+        </a>
+        <a class="toggle-nav hidden-lg opened">
+            <span></span>
+            <span></span>
+            <span></span>
+        </a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'account'%}" class="btn" style="color: white">Личный кабинет</a>
+        {% else %}
+            <a href="/login" class="btn btn-style1 pull-right hidden-xs regLink" style="color: white">Вход/Регистрация</a>
+            <!--<a href="/register" class="btn_reg" style="color: white">Регистрация</a> --->
+        {% endif %}
+        <nav class="main-nav lastReg opened">
+            <a href="https://aokrt.ru/#about" data-id="1">Об  ассоциации</a>
+            <a href="https://aokrt.ru/#speakers" data-id="2">Сотрудники</a>
+            <a href="https://aokrt.ru/#news" data-id="3">Новости</a>
+            <a href="https://aokrt.ru/#partners" data-id="4">Партнеры</a>
+            <a href="https://aokrt.ru/#partners" data-id="5">Члены АО РТ</a>
+            <a href="https://aokrt.ru/#contacts" data-id="6">Контакты</a>
+            {% if user.is_authenticated %}
+                <a href="/logout" data-id="7">Выход</a>
+            {% else %}
+
+            {% endif %}
+        </nav>
+    </div>
+</header>
+<body>
+<div class="tender_acc">
+<div>
+{% if user.is_authenticated %}
+    <a href="{% url 'post_new' %}">Разместить тендер</a>
+{% endif %}
+</div>
+</div>
+    {% block content %}
+    {% endblock %}
+</body>
+<footer class="footer">
+<!--    <div class="container-fluid">
+        <div class="copyright">
+            © Ассоциации отелей г.Казани и РТ
+        </div>
+    </div>
+    -->
+</footer>
+</html>

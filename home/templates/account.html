@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+    <a href="/">Назад</a>
+    <br>
+    <center>Тендеры которые были размещены вами</center>
+
+ {% for post in posts %}
+     {% if post.author|stringformat:"s" == user.get_username|stringformat:"s" %}
+            <div class="post">
+                <div class="borders">
+                    <div class="text_op">№{{ post.pk }}</div>
+                            <div class="title"><h4><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h4></div>
+                    <div class="lines">
+                        <div class="text_op">Дата размещения:</div> <div style="color: black">{{ post.start }}</div><br>
+                         <div class="text_op">Окончание приёма предложений:</div> <div style="color: black">{{ post.ending }}</div>
+                    </div>
+                    <br>
+                <br>
+                {% now "j" as D %}{% now "n" as M %}{% now "Y" as Y %}<br>
+                {% if post.ending.day|add:"0" <= D|add:"0" and post.ending.month|add:"0" <= M|add:"0" and post.ending.year|add:"0" <= Y|add:"0" %}
+                    Время предложения закончилось
+                {% else %}
+                {% for buys in buys %}
+                        {% if buys.tenders|stringformat:"s" == post.title|stringformat:"s" %}
+                            <div style="color: green">Вы выбрали {{ buys.client }}</div>
+                        {% endif %}
+                {% endfor %}
+                    {% for cash in cash %}
+                            {% if cash.tenders|stringformat:"s" == post.title|stringformat:"s" %}
+                                <hr>
+                                    <div class="text_op">Подал заявку: {{ cash.author }}</div><br>
+                                    <div class="text_op">Сумма: {{ cash.cash }} руб.</div><br>
+                                    <div class="text_op">Колличество: {{ cash.ques }}</div><br>
+                                    <a href="{% url 'user_buy_tender' pk=cash.pk %}"><button>Подробнее</button></a>
+                            {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    {% for buys in buys %}
+        {% for cash in cash %}
+            {% if buys.tenders|stringformat:"s" == cash.tenders|stringformat:"s" %}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+    <a href="{% url 'view_tender' %}">Заявки</a>
+{% endblock %}

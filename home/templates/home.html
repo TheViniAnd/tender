@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block content %}
+ {% for post in posts %}
+            <div class="post">
+                <div class="border">
+                    <div class="left_block">
+                        <div class="author_block">
+                            Пользователь: <div style="color: #1a1822; font-size: 2.3ch; display:inline-block;">{{ post.author }}</div>
+                        </div>
+                        <div class="time_go">
+                            {% if post.ending.day|add:"0" <= D|add:"0" and post.ending.month|add:"0" <= M|add:"0" and post.ending.year|add:"0" <= Y|add:"0" %}
+                                Процедура завершена
+                            {% else %}
+                                Активный тендер
+                                <div style="font-size: 1.8ch; color: #1a1822">
+                                 До {{ post.ending }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="costs">
+                            <div style="font-size: 1ch; color: #9e9e9e; width: 100px;">
+                                Начальная цена
+                            </div>
+                            {{ post.cost }}
+                            <div style="color: #9e9e9e; font-size: 0.9ch; width: 150px;">
+                                Российских рублей.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="moddle_block">
+                        <div class="number">
+                            <a href="{% url 'post_detail' pk=post.pk %}">№{{ post.pk }}</a>
+                        </div>
+                        <div class="compania">
+                            <div class="compania_name">
+                                <div style="color: #9e9e9e; font-size: 1.7ch">Заказчик</div>
+                                <div style="font-size: 2.2ch; color: #1a1822">{{ post.compania }}</div>
+                            </div>
+                            <div class="titles">
+                                <div style="color: #9e9e9e; font-size: 1.7ch">Наименование</div>
+                                {{ post.title }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="right_block">
+                        <div class="regions">
+                            <div style="font-size: 1.7ch; color: #9e9e9e">Регион доставки</div>
+                            <div class="region_dostav">
+                                {{ post.region }}
+                            </div>
+                            <div style="font-size: 1.7ch; color: #9e9e9e">Место поставки</div>
+                            <div class="region_dostav">
+                                {{ post.supply }}
+                            </div>
+                        </div>
+                    </div>
+                    {% if post.que %}
+                        <div class="r_right_block">
+                            <div class="cost_ov">
+                                <div style="font-size: 1.7ch; color: #9e9e9e">Колличество</div>
+                                <div class="text_cost" style="float: left">{{ post.que }}</div><div style="font-size: 1.7ch; color: #9e9e9e;float: left; margin-top: 4px; margin-left: 2px;">Шт.</div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+    {% endfor %}
+{% endblock %}

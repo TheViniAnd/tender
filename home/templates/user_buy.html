@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+    <a href="/">Назад</a>
+    <br>
+    <center>Отвтетить на заявку
+                <hr>
+                <div class="text_op">Подал заявку: {{ cash.author }}</div><br>
+                <div class="text_op">Сумма: {{ cash.cash }} руб.</div><br>
+                <div class="text_op">Колличество: {{ cash.ques }}</div><br>
+                <div class="text_op">Телефон: {{ cash.phones }}</div><br>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ cashss.as_p }}
+                    <input  type="submit">
+                </form>
+    </center>
+{% endblock %}

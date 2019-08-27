@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <title>Авторизация</title>
+    <form action="" method="post">
+    {% csrf_token %}
+    <div class="form_style_reg" style="border-radius: 23px; font-family: 'Open Sans', sans-serif" >
+        <h2 style="padding-bottom: 20px;" ><center>Регистарция</center></h2>
+         <div style="width: 300px;">
+            {{ form.as_p }}
+         </div>
+        <center><button type="submit" class="button_cashs" style="background:#ff00ae;border-radius: 23px">Зарегистрироваться</button></center>
+    </div>
+
+</form>
+{% endblock %}

@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load static %}
+{% block content %}
+    <a href="/">Назад</a>
+        <div class="detail_block">
+            <div class="one_block">
+                <div class="sved">
+                    <div class="text_sved">
+                        ОБЩИЕ СВЕДЕНЬЯ О ТЕНДЕРЕ
+                    </div>
+                </div>
+                <div class="text_number">
+                    №{{ post.pk }}
+                </div>
+                <div class="title_detail">
+                    <div style="color: #9e9e9e; font-size: 2ch; margin-left: 1%">Заголовок: </div>
+                    <div class="title_text">
+                        {{ post.title }}
+                    </div>
+                </div>
+                <div class="opi_detail">
+                    <div style="color: #9e9e9e; font-size: 2ch; margin-left: 1%">Описание: </div>
+                    <div class="opi_text">
+                        {{ post.text }}
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="two_block">
+                <div class="costsr">
+                    <div style="color: #9e9e9e; font-size: 2ch; margin-left: 1%;">Начальная цена: </div>
+                    <div class="cost_block">
+                        {{ post.cost }}
+                    </div>
+                    <div style="color: #9e9e9e; font-size: 2ch; margin-left: 1%;">Российских рублей </div>
+                </div>
+                {% if post.que %}
+                <div class="que_block">
+                    <div style="color: #9e9e9e; font-size: 2ch; margin-left: 2%;">Колличество: </div>
+                    <div class="que_text">
+                        {{ post.que }}
+                        <div style="color: #9e9e9e; font-size: 2ch; float: right;padding-left: 2%;"> Шт.</div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            <div class="three_block">
+                <div style="color: #9e9e9e; font-size: 2ch; margin-left: 2%">Регион закупки: </div>
+                <div class="region_detail">
+                    {{ post.region }}
+                </div>
+                <div style="color: #9e9e9e; font-size: 2ch; margin-left: 2%">Место поставки: </div>
+                <div class="postav">
+                    {{ post.supply }}
+                </div>
+            </div>
+            <div class="date_block">
+                <div style="color: #9e9e9e; font-size: 2ch; margin-left: 2%">Дата размещения: </div>
+                <div class="start_block">
+                    {{ post.start }}
+                </div>
+                <div style="color: #9e9e9e; font-size: 2ch; margin-left: 2%">Окончание приёма предложений: </div>
+                <div class="start_block">
+                    {{ post.ending }}
+                </div>
+            </div>
+            <div class="button_block">
+                {% if user.is_authenticated %}
+                    <a href="/media/{{ post.nameFile }}" download>
+                        <div class="button_docs">
+                            <center>Документы</center>
+                        </div>
+                    </a>
+                    <a href="/media/docs/{{ path.title }}" download>
+                        <div class="button_docs">
+                            <center>Тендер в PDF</center>
+                        </div>
+                    </a>
+                {% endif %}
+            </div>
+        <div class="compan_block">
+            <div class="sved">
+                <div class="text_sved">
+                    ИНФОРМАЦИЯ О ЗАКАЗЧИКЕ
+                </div>
+            </div>
+            <div class="author_detail">
+                <div style="color: #9e9e9e; font-size: 2ch; margin-left: 6%">Автор: </div>
+                <div class="author_text">
+                    {{ post.author }}
+                </div>
+            </div>
+            <div class="zacazc_block">
+                <div style="color: #9e9e9e; font-size: 2ch; margin-left: 4%">Заказчик: </div>
+                <div class="compan_text">
+                    {{ post.compania }}
+                </div>
+            </div>
+            <div class="data_block">
+                <div style="color: #9e9e9e; font-size: 2.5ch; margin-left: 1%">Инн: </div>
+                    <div class="inn_block">
+                        {% if user.is_authenticated %}
+                            {{ post.inn }}
+                        {% else %}
+                            Доступно только для авторизированых пользователей
+                        {% endif %}
+                    </div>
+
+                <div style="color: #9e9e9e; font-size: 2.5ch; margin-left: 1%">Кпп: </div>
+                    <div class="inn_block">
+                        {% if user.is_authenticated %}
+                            {{ post.kpp }}
+                        {% else %}
+                            Доступно только для авторизированых пользователей
+                        {% endif %}
+                    </div>
+
+                <div style="color: #9e9e9e; font-size: 2.5ch; margin-left: 1%">Телефон: </div>
+                    <div class="inn_block">
+                        {% if user.is_authenticated %}
+                            {{ post.phone }}
+                        {% else %}
+                            Доступно только для авторизированых пользователей
+                        {% endif %}
+                    </div>
+            </div>
+        </div>
+        {% now "j" as D %}{% now "n" as M %}{% now "Y" as Y %}<br>
+                {% if user.is_authenticated %}
+                    {% if post.ending.day|add:"0" <= D|add:"0" and post.ending.month|add:"0" <= M|add:"0" and post.ending.year|add:"0" <= Y|add:"0" %}
+                        Время предложения закончилось
+                    {% else %}
+                        {% if post.author|stringformat:"s" != user.get_username|stringformat:"s" %}
+                            <a href="{% url 'cash_new' pk=post.pk %}"><button class="button_cash" style="margin-left: 10px;">Вступить</button></a>
+                        {% else %}
+                            Вы не можете вступить в своей тендер
+                        {% endif %}
+                    {% endif %}
+                {% else %}
+                    Что бы подать заявку нужно войти
+                {% endif %}
+        </div>
+{% endblock %}

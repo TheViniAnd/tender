@@ -1,0 +1,97 @@
+<VirtualHost *:443>
+SSLEngine on
+SSLCertificateFile /etc/httpd/ssl/xn--80aaa6cblddfgbd.xn--_le2-f6dy.crt
+SSLCertificateKeyFile /etc/httpd/ssl/xn--80aaa6cblddfgbd.xn--_le2-f6dy.key
+LoadModule rewrite_module /usr/lib64/httpd/modules/mod_rewrite.so
+ServerName www.xn--80aaa6cblddfgbd.xn--p1ai
+ServerAlias xn--80aaa6cblddfgbd.xn--p1ai
+DocumentRoot "/var/www/html"
+Alias /static /var/www/html/static
+<Directory /var/www/html/static>
+ Require all granted
+</Directory>
+
+<Directory /var/www/html/sss>
+   <Files wsgi.py>
+      Order deny,allow
+      Require all granted
+   </Files>
+</Directory>
+
+WSGIDaemonProcess html python-path=/var/www/html:/var/www/html/nenv/lib/python3.6/site-packages
+WSGIProcessGroup html
+WSGIScriptAlias / /var/www/html/sss/wsgi.py
+</VirtualHost>
+
+<VirtualHost *:80>
+ServerName www.xn--80aaa6cblddfgbd.xn--p1ai
+Redirect "/" "https://www.xn--80aaa6cblddfgbd.xn--p1ai/"
+</VirtualHost>
+
+<VirtualHost *:80 *:443>
+SSLEngine on
+
+WSGIPassAuthorization On
+RewriteEngine on
+RewriteCond %{HTTP:Authorization} ^(.*)
+RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
+SSLCertificateFile /etc/httpd/ssl/dgroup.itest.im_le1.crt
+SSLCertificateKeyFile /etc/httpd/ssl/dgroup.itest.im_le1.key
+LoadModule rewrite_module /usr/lib64/httpd/modules/mod_rewrite.so
+ServerName www.dgroup.itest.im
+ServerAlias dgroup.itest.im
+DocumentRoot "/var/www/dgroup"
+Alias /static /var/www/dgroup/static
+<Directory /var/www/dgroup/static>
+ Require all granted
+</Directory>
+
+<Directory /var/www/dgroup/apiService>
+   <Files wsgi.py>
+      Order deny,allow
+      Require all granted
+   </Files>
+</Directory>
+
+WSGIDaemonProcess dgroup python-path=/var/www/dgroup:/var/www/dgroup/nenv/lib/python3.6/site-packages
+WSGIProcessGroup dgroup
+WSGIScriptReloading Off
+WSGIScriptAlias / /var/www/dgroup/apiService/wsgi.py
+</VirtualHost>
+
+
+
+<VirtualHost *:81>
+SSLEngine on
+
+WSGIPassAuthorization On
+RewriteEngine on
+ErrorLog /var/www/tender/error.log
+ServerName www.tender.aokrt.ru
+ServerAlias tender.aokrt.ru
+DocumentRoot "/var/www/tender"
+Alias /static /var/www/tender/home/static
+<Directory /var/www/tender/home/static>
+ Require all granted
+</Directory>
+
+<Directory /var/www/tender/duble_tender>
+   <Files wsgi.py>
+      Order deny,allow
+      Require all granted
+   </Files>
+</Directory>
+
+WSGIDaemonProcess tender python-path=/var/www/tender:/var/www/tender/nenv/lib/python3.6/site-packages
+WSGIProcessGroup tender
+WSGIScriptReloading Off
+WSGIScriptAlias / /var/www/tender/duble_tender/wsgi.py
+</VirtualHost>
+
+
+
+<Location "/robots.txt">
+ SetHandler None
+ Require all granted
+</Location>
+Alias /robots.txt /var/www/html/robots.txt

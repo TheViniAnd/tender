@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+    <a href="/">Назад</a>
+    <br>
+    <center>Заявки на тендер</center>
+ {% for cash in cahs %}
+     {% if cash.author|stringformat:"s" == user.get_username|stringformat:"s" %}
+
+      <div class="post">
+         <div style="border: solid 1px black; padding: 15px;">
+            {% for post in post %}
+                {% if post.title|stringformat:"s" == cash.tenders|stringformat:"s" %}
+                    Автор: {{ post.author }}<br>
+                    Компания: {{ post.compania }}
+                    <div class="title"><h3><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h3></div>
+                    Конец: {{ post.ending }}
+                {% endif %}
+            {% endfor %}
+            <br>
+            Сумма указанная вами: {{ cash.cash }} Руб.
+
+            <br>
+            {% for buy in buy %}
+                {% if buy.tenders|stringformat:"s" == cash.tenders|stringformat:"s" %}
+                   <br><div style="color: green">Выбрали вас</div>
+                {% else %}
+
+                {% endif %}
+            {% endfor %}
+
+            </div>
+         </div>
+     {% endif %}
+ {% endfor %}
+
+{% endblock %}

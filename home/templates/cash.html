@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+        <div class="form_cash">
+            <div class="sved">
+                <div class="text_sved">
+                    <div style="padding-left:2%; ">Подать заявку</div>
+                </div>
+            </div>
+            <div class="formss">
+                <form method="POST" enctype="multipart/form-data" >
+                {% csrf_token %}
+                    {{ cashs.as_p }}
+                <button type="submit" class="button_cash">Подать</button>
+                </form>
+            </div>
+        </div>
+{% endblock %}
